@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Enjoy your gif!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+
+<body>
+
+<iframe th:src="@{${embed}}" width="350" height="480" frameBorder="0"
+        class="giphy-embed"></iframe><p><a th:href="@{${url}}">via GIPHY</a></p>
+</body>
+
+</html>
