@@ -1,0 +1,7 @@
+{
+  "baseCurrency" : "USD",
+  "giphyAPIKey" : "QPayNCt8xoMomlYfVdySXOEGxAxXfiV2",
+  "giphyUrl" : "http://api.giphy.com",
+  "openExchangeApiKey" : "5c17c676313b46b7a2c60572fae3873d",
+  "openExchangeApiUrl" : "http://openexchangerates.org/api"
+}

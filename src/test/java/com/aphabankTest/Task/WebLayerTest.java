@@ -6,9 +6,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
-import static org.springframework.test.util.AssertionErrors.assertNotNull;
+import static org.springframework.test.util.AssertionErrors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
@@ -38,14 +39,4 @@ public class WebLayerTest {
 
     }
 
-    @Test
-    public void ShouldReturnGifObject() {
-
-        List<Endpoints> roleList = Arrays.asList(Endpoints.values());
-        roleList.forEach(endpoint -> {
-            assertNotNull("gif url can't be null",
-                    ApiRequester.getRandomGifUrl(endpoint.toString()));
-            System.out.println(endpoint.toString() + " passed ");
-        });
-    }
 }

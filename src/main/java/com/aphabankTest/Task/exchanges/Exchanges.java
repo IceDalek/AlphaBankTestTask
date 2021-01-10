@@ -10,14 +10,15 @@ public interface Exchanges {
     /**
      * request for today currency changes
      */
-    @RequestLine("GET /latest.json?app_id=2843821a52fe44c8a2d921d49e6bc377")
-    ExchangeResponse getTodayExchangeData();
+    @RequestLine("GET /latest.json?app_id={apiKey}")
+    ExchangeResponse getTodayExchangeData(@Param("apiKey") String apiKey);
 
     /**
      * request for historical changes (any date)
      *
      * @param date this param must be ONLY in "yyyy-MM-dd" pattern;
      */
-    @RequestLine("GET /historical/{date}.json?app_id=2843821a52fe44c8a2d921d49e6bc377")
-    ExchangeResponse getTomorrowExchangeData(@Param("date") String date);
+    @RequestLine("GET /historical/{date}.json?app_id={apiKey}")
+    ExchangeResponse getTomorrowExchangeData(@Param("date") String date,
+                                             @Param("apiKey") String apiKey);
 }

@@ -1,9 +1,18 @@
+
+
+
 plugins {
 	id 'org.springframework.boot' version '2.4.1'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
+	id 'com.palantir.docker' version '0.25.0'
 }
-
+docker {
+	name "alphatesttask"
+	dockerfile file('src/docker/Dockerfile')
+	copySpec.from(jar).rename(".*","app.jar")
+	buildArgs(['JAR_FILE': "app.jar"])
+}
 group = 'com.aphabankTest'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '15'
@@ -18,7 +27,7 @@ dependencies {
 	compile group: 'com.netflix.feign', name: 'feign-gson', version: '8.14.3'
 	// https://mvnrepository.com/artifact/com.google.code.gson/gson
 	compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
-
+	compile("org.springframework.boot:spring-boot-devtools")
 	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.0.0'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

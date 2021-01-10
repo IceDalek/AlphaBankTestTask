@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,7 +25,7 @@ class TaskApplicationTests {
 
     @Autowired
     private MainController controller;
-
+    private final HashMap configs = ApiRequester.getConfigs();
     private final Exchanges exchanges = Feign.builder()
             .decoder(new GsonDecoder())
             .target(Exchanges.class, "http://openexchangerates.org/api");
@@ -34,30 +35,42 @@ class TaskApplicationTests {
         assertThat(controller).isNotNull();
     }
 
+    @Test
+    public void configHashMapIsNotNull() {
+        assertFalse("configs can't be empty!", configs.isEmpty());
+    }
 
     @Test
     public void ShouldReturnGifObject() {
         List<Endpoints> endpointsList = Arrays.asList(Endpoints.values());
         endpointsList.forEach(endpoint -> {
             GifUrl gifUrl = ApiRequester.getRandomGifUrl(endpoint.toString());
+            try {
+
+
             assertNotNull("gif url can't be null", gifUrl);
             assertNotNull("embed url of object can't be null", gifUrl.embedUrl);
             assertNotNull("url of object can't be null", gifUrl.url);
             System.out.println(endpoint.toString() + " passed ");
+            }
+            catch (NullPointerException e){
+                e.printStackTrace();
+            }
         });
     }
 
     @Test
     public void checkReturnedCurrency() {
+        String openExchangeApiKey = (String) configs.get("openExchangeApiKey");
         List<Endpoints> endpointsList = Arrays.asList(Endpoints.values());
         endpointsList.forEach(endpoint -> {
             LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
             DateTimeFormatter fmt =
                     DateTimeFormatter.ofPattern("yyyy-MM-dd");
             String yesterdayDate = yesterday.format(fmt);
-            ExchangeResponse yesterdayResponse = exchanges.getTomorrowExchangeData(yesterdayDate);
+            ExchangeResponse yesterdayResponse = exchanges.getTomorrowExchangeData(yesterdayDate, openExchangeApiKey);
             Rates yesterdayRates = yesterdayResponse.getRates();
-            ExchangeResponse exchangeResponse = exchanges.getTodayExchangeData();
+            ExchangeResponse exchangeResponse = exchanges.getTodayExchangeData(openExchangeApiKey);
             Rates todayRates = exchangeResponse.getRates();
             float todayRate;
             float yesterdayRate;
@@ -74,4 +87,6 @@ class TaskApplicationTests {
             }
         });
     }
+
+
 }
